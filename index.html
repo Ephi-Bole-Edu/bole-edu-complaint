@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+[3/29/2026 3:53 AM] Eph: <!DOCTYPE html>
 <html lang="am">
 <head>
     <meta charset="UTF-8">
@@ -8,261 +8,436 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@100..900&display=swap');
-        body { font-family: 'Noto Sans Ethiopic', sans-serif; }
-        .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        body { font-family: 'Noto Sans Ethiopic', sans-serif; overflow-x: hidden; }
+        .sidebar-active { background: rgba(255,255,255,0.15); border-left: 4px solid #fbbf24; }
+        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen">
-    <div id="app">
-        <header class="gradient-header text-white p-6 shadow-2xl sticky top-0 z-50 border-b-4 border-yellow-500">
-            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-center md:text-left">
-                    <h1 class="text-xl md:text-2xl font-black uppercase">ቦሌ ክፍለ ከተማ ትምህርት ጽ/ቤት</h1>
-                    <p class="text-xs text-yellow-400 font-bold uppercase tracking-widest">የቅሬታ መቀበያና ውሳኔ መስጫ ሲስተም</p>
-                </div>
-                <div class="flex bg-white/10 p-1 rounded-2xl backdrop-blur-md border border-white/20">
-                    <button onclick="switchView('submit')" id="btn-submit" class="px-6 py-2 rounded-xl text-xs font-black transition-all bg-white text-blue-900 shadow-lg">ቅሬታ አቅርብ (001)</button>
-                    <button onclick="switchView('admin')" id="btn-admin" class="px-6 py-2 rounded-xl text-xs font-black transition-all text-white hover:bg-white/10">ዳሽቦርድ (ለኮሚቴ)</button>
-                </div>
-            </div>
-        </header>
+<body class="bg-slate-100 min-h-screen flex flex-col md:flex-row">
 
-        <main class="max-w-6xl mx-auto p-4 md:p-8">
-            <div id="view-submit" class="max-w-2xl mx-auto bg-white rounded-[2.5rem] shadow-2xl p-8 md:p-12 border border-slate-100">
-                <div class="flex items-center gap-4 mb-10 border-b pb-6">
-                    <div class="bg-blue-600 p-4 rounded-2xl text-white shadow-lg"><i data-lucide="file-plus"></i></div>
-                    <div>
-                        <h2 class="text-xl font-black text-blue-900 uppercase">የቅሬታ ማቅረቢያ ቅጽ 001</h2>
-                        <p class="text-slate-400 text-[10px] font-bold uppercase">እባክዎ መረጃዎቹን በጥንቃቄ ይሙሉ</p>
-                    </div>
-                </div>
-
-                <form onsubmit="handleForm001(event)" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-500 ml-2">ሙሉ ስም *</label>
-                            <input id="f001-name" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 transition-all shadow-sm">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-black text-slate-500 ml-2">ስልክ ቁጥር *</label>
-                            <input id="f001-phone" type="tel" required placeholder="09..." class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 transition-all shadow-sm">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-black text-slate-500 ml-2">ኢሜል (አማራጭ)</label>
-                        <input id="f001-email" type="email" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 transition-all shadow-sm">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-black text-slate-500 ml-2">የቅሬታው ዝርዝር መግለጫ *</label>
-[3/29/2026 3:32 AM] Eph: <textarea id="f001-subject" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-3xl outline-none focus:border-blue-500 h-40 transition-all shadow-sm resize-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-5 rounded-[1.5rem] font-black text-lg shadow-xl hover:bg-blue-700 active:scale-95 transition-all flex items-center justify-center gap-3">
-                        <i data-lucide="send"></i> ቅሬታውን መዝግብ (001)
-                    </button>
-                </form>
-            </div>
-
-            <div id="view-admin" class="hidden space-y-8 animate-in fade-in duration-500">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-3xl shadow-xl border-l-8 border-blue-600">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">ጠቅላላ ቅሬታዎች</p>
-                        <h3 id="stat-total" class="text-4xl font-black text-blue-900 mt-2">0</h3>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl shadow-xl border-l-8 border-amber-500">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">በጥበቃ ላይ</p>
-                        <h3 id="stat-pending" class="text-4xl font-black text-amber-600 mt-2">0</h3>
-                        <div class="w-full bg-slate-100 h-2 rounded-full mt-4 overflow-hidden">
-                            <div id="stat-bar-pending" class="bg-amber-500 h-full transition-all duration-1000" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl shadow-xl border-l-8 border-emerald-600">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">ውሳኔ ያገኙ</p>
-                        <h3 id="stat-done" class="text-4xl font-black text-emerald-600 mt-2">0</h3>
-                        <div class="w-full bg-slate-100 h-2 rounded-full mt-4 overflow-hidden">
-                            <div id="stat-bar-done" class="bg-emerald-600 h-full transition-all duration-1000" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
-                    <div class="p-6 bg-slate-50 border-b flex justify-between items-center">
-                        <h2 class="font-black text-blue-900 uppercase text-xs">የቅሬታዎች ዝርዝር መከታተያ</h2>
-                        <button onclick="clearData()" class="text-[10px] text-red-400 font-bold uppercase hover:text-red-600 transition-colors">ሁሉንም አጥፋ</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr class="bg-slate-50 text-[10px] text-slate-400 font-black uppercase tracking-widest border-b">
-                                    <th class="p-6">ባለጉዳይ / መረጃ</th>
-                                    <th class="p-6">ሁኔታ</th>
-                                    <th class="p-6">የኮሚቴ ውሳኔ</th>
-                                    <th class="p-6 text-right">ድርጊት</th>
-                                </tr>
-                            </thead>
-                            <tbody id="complaint-list" class="divide-y divide-slate-100"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <div id="modal-f002" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl p-8 animate-in zoom-in duration-300">
-[3/29/2026 3:32 AM] Eph: <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-amber-100 p-3 rounded-xl text-amber-600"><i data-lucide="gavel"></i></div>
-                    <h2 class="text-xl font-black text-blue-900">የውሳኔ መስጫ ቅጽ 002</h2>
-                </div>
-                <form onsubmit="handleForm002(event)" class="space-y-4">
-                    <input type="hidden" id="f002-id">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase">የውሳኔ አይነት</label>
-                        <select id="f002-decision-type" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 font-bold text-sm">
-                            <option value="ቅሬታው ተቀባይነት አግኝቷል">ቅሬታው ተቀባይነት አግኝቷል</option>
-                            <option value="ቅሬታው ተቀባይነት አላገኘም">ቅሬታው ተቀባይነት አላገኘም</option>
-                            <option value="ተጨማሪ ማስረጃ ያስፈልገዋል">ተጨማሪ ማስረጃ ያስፈልገዋል</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase">ዝርዝር ውሳኔ</label>
-                        <textarea id="f002-comment" required placeholder="የተሰጠውን ውሳኔ እዚህ ጋር ይግለጹ..." class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 h-32 text-sm resize-none"></textarea>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase">የባለሙያ/ኮሚቴ ስም</label>
-                        <input id="f002-officer" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 font-bold text-sm">
-                    </div>
-                    <div class="flex gap-3 pt-4">
-                        <button type="button" onclick="closeModal()" class="flex-1 bg-slate-100 text-slate-600 py-4 rounded-2xl font-black text-xs uppercase hover:bg-slate-200">ተመለስ</button>
-                        <button type="submit" class="flex-1 bg-blue-600 text-white py-4 rounded-2xl font-black text-xs uppercase shadow-lg shadow-blue-200 hover:bg-blue-700">ውሳኔውን መዝግብ</button>
-                    </div>
-                </form>
+    <!-- Role Selection (Initial Screen) -->
+    <div id="role-screen" class="fixed inset-0 z-[100] bg-blue-900 flex items-center justify-center p-4">
+        <div class="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl max-w-md w-full text-center border-4 border-blue-800">
+            <h1 class="text-2xl font-black text-blue-900 mb-2 uppercase">እንኳን ደህና መጡ</h1>
+            <p class="text-slate-400 text-xs font-bold mb-8 uppercase tracking-widest text-center">ቦሌ ክፍለ ከተማ ትምህርት ጽ/ቤት</p>
+            <div class="space-y-4">
+                <button onclick="enterRole('public')" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 transition-all flex items-center justify-center gap-3">
+                    <i data-lucide="user"></i> ባለጉዳይ ነኝ
+                </button>
+                <button onclick="showLogin()" class="w-full bg-slate-100 text-blue-900 py-5 rounded-2xl font-black text-lg hover:bg-slate-200 transition-all flex items-center justify-center gap-3 border-2 border-slate-200">
+                    <i data-lucide="shield-check"></i> የኮሚቴ አባል ነኝ
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-[110] bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl max-w-sm w-full">
+            <h2 class="text-xl font-black text-blue-900 mb-6 flex items-center gap-2 uppercase">
+                <i data-lucide="lock"></i> መግቢያ
+            </h2>
+            <input id="admin-password" type="password" placeholder="የይለፍ ቃል ያስገቡ" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 mb-4 font-bold">
+            <div class="flex gap-3">
+                <button onclick="hideLogin()" class="flex-1 py-4 font-black text-xs uppercase text-slate-400">ተመለስ</button>
+                <button onclick="login()" class="flex-1 bg-blue-600 text-white py-4 rounded-xl font-black text-xs uppercase shadow-lg hover:bg-blue-700">ግባ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Sidebar (Admin Only) -->
+    <aside id="sidebar" class="hidden w-full md:w-72 bg-blue-900 text-white flex-col sticky top-0 h-screen overflow-y-auto">
+        <div class="p-8 border-b border-white/10 text-center">
+            <h2 class="font-black text-lg uppercase leading-tight">ቦሌ ክፍለ ከተማ<br><span class="text-yellow-400 text-xs">ትምህርት ጽ/ቤት</span></h2>
+        </div>
+        <nav class="flex-1 py-6 space-y-1">
+            <button onclick="setMenu('home')" id="m-home" class="w-full flex items-center gap-4 px-8 py-4 font-bold text-sm hover:bg-white/10 transition-all sidebar-active">
+                <i data-lucide="home" size="18"></i> Home
+            </button>
+            
+            <div class="px-8 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mt-4">Dashboard</div>
+            <button onclick="setMenu('f001-list')" id="m-f001-list" class="w-full flex items-center gap-4 px-8 py-4 font-bold text-sm hover:bg-white/10 transition-all">
+[3/29/2026 3:53 AM] Eph: <i data-lucide="file-text" size="18"></i> ቅሬታ ቅጽ 001
+            </button>
+            <button onclick="setMenu('f002-list')" id="m-f002-list" class="w-full flex items-center gap-4 px-8 py-4 font-bold text-sm hover:bg-white/10 transition-all">
+                <i data-lucide="check-square" size="18"></i> የውሳኔ ቅጽ 002
+            </button>
+
+            <div class="px-8 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mt-4">Statistics</div>
+            <button onclick="setMenu('stats')" id="m-stats" class="w-full flex items-center gap-4 px-8 py-4 font-bold text-sm hover:bg-white/10 transition-all">
+                <i data-lucide="pie-chart" size="18"></i> የቅሬታ ስታትስ
+            </button>
+
+            <div class="px-8 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mt-4">Approval</div>
+            <button onclick="setMenu('approval')" id="m-approval" class="w-full flex items-center gap-4 px-8 py-4 font-bold text-sm hover:bg-white/10 transition-all">
+                <i data-lucide="shield-check" size="18"></i> Approval Center
+            </button>
+        </nav>
+        <div class="p-6">
+            <button onclick="exitAdmin()" class="w-full bg-red-500/20 text-red-100 py-4 rounded-2xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-red-500/30 transition-all">
+                <i data-lucide="log-out" size="16"></i> ዘግተህ ውጣ
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="flex-1 overflow-y-auto">
+        <!-- Public View (Form 001 Only) -->
+        <div id="public-view" class="hidden p-4 md:p-12">
+            <div class="max-w-2xl mx-auto">
+                <header class="text-center mb-10">
+                    <h1 class="text-2xl font-black text-blue-900 uppercase">የቅሬታ ማቅረቢያ ቅጽ 001</h1>
+                    <button onclick="exitToRole()" class="mt-4 text-xs font-bold text-slate-400 hover:text-blue-600 flex items-center gap-2 mx-auto uppercase">
+                        <i data-lucide="arrow-left" size="14"></i> ተመለስ
+                    </button>
+                </header>
+                <div class="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-200">
+                    <form onsubmit="handlePublicSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">ሙሉ ስም *</label>
+                                <input id="p-name" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl focus:border-blue-500 outline-none transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">ስልክ ቁጥር *</label>
+                                <input id="p-phone" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl focus:border-blue-500 outline-none transition-all">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2">ኢሜል (አማራጭ)</label>
+                            <input id="p-email" type="email" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl focus:border-blue-500 outline-none transition-all">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2">የቅሬታው ዝርዝር *</label>
+                            <textarea id="p-subject" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-3xl focus:border-blue-500 outline-none h-48 transition-all resize-none"></textarea>
+[3/29/2026 3:53 AM] Eph: </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-6 rounded-[1.8rem] font-black text-lg shadow-xl hover:bg-blue-700 active:scale-95 transition-all">
+                            ቅሬታውን መዝግብ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Contents -->
+        <div id="admin-view" class="hidden p-6 md:p-10 space-y-8 animate-in fade-in duration-500">
+            
+            <!-- Home Menu -->
+            <section id="section-home" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden group">
+                        <i data-lucide="file-plus" class="absolute -right-8 -bottom-8 w-48 h-48 opacity-10 group-hover:scale-110 transition-all"></i>
+                        <h2 class="text-3xl font-black mb-2 uppercase">እንኳን ደህና መጡ</h2>
+                        <p class="text-blue-100 font-bold text-sm">የቦሌ ክፍለ ከተማ ቅሬታ አስተዳደር ሲስተም</p>
+                        <div class="mt-8 flex gap-4">
+                            <div class="bg-white/10 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Active System</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl text-center border border-slate-100">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">ጠቅላላ ቅሬታ</p>
+                            <h3 id="stat-main-total" class="text-4xl font-black text-blue-900">0</h3>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl text-center border border-slate-100">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">በጥበቃ ላይ</p>
+                            <h3 id="stat-main-pending" class="text-4xl font-black text-amber-500">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- F001 List -->
+            <section id="section-f001-list" class="hidden space-y-6">
+                <h2 class="text-xl font-black text-blue-900 uppercase flex items-center gap-2">
+                    <i data-lucide="file-text"></i> ቅሬታ ማቅረቢያ ቅጽ 001 ዝርዝር
+                </h2>
+                <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-slate-100">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b">
+                                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    <th class="p-6">ባለጉዳይ</th>
+                                    <th class="p-6">ቅሬታ</th>
+                                    <th class="p-6 text-right">ድርጊት</th>
+                                </tr>
+                            </thead>
+                            <tbody id="list-f001" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- F002 (Decision) List -->
+            <section id="section-f002-list" class="hidden space-y-6">
+                <h2 class="text-xl font-black text-blue-900 uppercase flex items-center gap-2">
+                    <i data-lucide="check-square"></i> የውሳኔ መስጫ ቅጽ 002 ዝርዝር
+                </h2>
+                <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-slate-100 text-center p-12" id="empty-f002">
+[3/29/2026 3:53 AM] Eph: <i data-lucide="info" class="mx-auto text-slate-200 mb-4" size="48"></i>
+                    <p class="text-slate-400 font-bold">ውሳኔ ያገኙ ቅሬታዎች እዚህ ይታያሉ</p>
+                </div>
+                <div id="container-f002" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </section>
+
+            <!-- Stats -->
+            <section id="section-stats" class="hidden space-y-8">
+                <h2 class="text-xl font-black text-blue-900 uppercase flex items-center gap-2">
+                    <i data-lucide="pie-chart"></i> የቅሬታ ስታትስቲክስ
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-10 rounded-[3rem] shadow-xl space-y-6">
+                        <h4 class="text-xs font-black uppercase text-slate-400">የአፈጻጸም ሂደት (Status)</h4>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between text-[10px] font-black uppercase mb-2"><span>በጥበቃ ላይ</span><span id="p-pending-per">0%</span></div>
+                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                                    <div id="bar-pending" class="bg-amber-400 h-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[10px] font-black uppercase mb-2"><span>ውሳኔ ያገኙ</span><span id="p-done-per">0%</span></div>
+                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                                    <div id="bar-done" class="bg-emerald-500 h-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Approval -->
+            <section id="section-approval" class="hidden space-y-6 text-center py-20 bg-white rounded-[3rem] shadow-xl border-4 border-dashed border-slate-100">
+                <div class="max-w-xs mx-auto space-y-4">
+                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto text-blue-600">
+                        <i data-lucide="shield-check" size="32"></i>
+                    </div>
+                    <h2 class="text-xl font-black text-blue-900 uppercase">Approval Center</h2>
+                    <p class="text-xs font-bold text-slate-400 leading-relaxed uppercase tracking-tighter">ውሳኔ ያገኙ ቅሬታዎችን ለማጽደቅና ለማህደር ስራዎች እዚህ ይከናወናሉ</p>
+                    <div class="pt-6">
+                        <span class="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase">Coming Soon in V3</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Form 002 Modal -->
+    <div id="modal-f002" class="fixed inset-0 z-[120] bg-blue-900/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl p-10 animate-in zoom-in duration-300">
+            <h2 class="text-xl font-black text-blue-900 mb-6 flex items-center gap-2 uppercase">
+                <i data-lucide="gavel"></i> ቅጽ 002 - የውሳኔ መስጫ
+            </h2>
+            <form onsubmit="saveDecision(event)" class="space-y-4">
+                <input type="hidden" id="dec-id">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2">የውሳኔ አይነት</label>
+                    <select id="dec-type" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 font-bold">
+[3/29/2026 3:53 AM] Eph: <option value="ተቀባይነት አግኝቷል">ቅሬታው ተቀባይነት አግኝቷል</option>
+                        <option value="ተቀባይነት አላገኘም">ቅሬታው ተቀባይነት አላገኘም</option>
+                        <option value="ተጨማሪ ማስረጃ">ተጨማሪ ማስረጃ ያስፈልገዋል</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2">ዝርዝር ውሳኔ</label>
+                    <textarea id="dec-comment" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 h-32 resize-none"></textarea>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2">ውሳኔ የሰጠው አካል</label>
+                    <input id="dec-officer" required class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 font-bold">
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeModal()" class="flex-1 py-4 font-black text-xs uppercase text-slate-400">ተመለስ</button>
+                    <button type="submit" class="flex-1 bg-blue-600 text-white py-4 rounded-xl font-black text-xs uppercase shadow-lg shadow-blue-200 hover:bg-blue-700">ውሳኔውን መዝግብ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        let complaints = JSON.parse(localStorage.getItem('bole_complaints_v2') || '[]');
+        // Store Data
+        let complaints = JSON.parse(localStorage.getItem('bole_v3_data') || '[]');
 
         function init() {
             lucide.createIcons();
             updateStats();
         }
 
-        function switchView(view) {
-            document.getElementById('view-submit').classList.toggle('hidden', view !== 'submit');
-            document.getElementById('view-admin').classList.toggle('hidden', view !== 'admin');
-            
-            document.getElementById('btn-submit').className = view === 'submit' ? 
-                'px-6 py-2 rounded-xl text-xs font-black transition-all bg-white text-blue-900 shadow-lg' : 
-                'px-6 py-2 rounded-xl text-xs font-black transition-all text-white hover:bg-white/10';
-            
-            document.getElementById('btn-admin').className = view === 'admin' ? 
-                'px-6 py-2 rounded-xl text-xs font-black transition-all bg-white text-blue-900 shadow-lg' : 
-                'px-6 py-2 rounded-xl text-xs font-black transition-all text-white hover:bg-white/10';
-
-            if(view === 'admin') renderList();
-            init();
+        // Role Management
+        function enterRole(role) {
+            document.getElementById('role-screen').classList.add('hidden');
+            if(role === 'public') {
+                document.getElementById('public-view').classList.remove('hidden');
+            }
         }
 
-        function handleForm001(e) {
+        function showLogin() { document.getElementById('login-modal').classList.remove('hidden'); }
+        function hideLogin() { document.getElementById('login-modal').classList.add('hidden'); }
+
+        function login() {
+            const pass = document.getElementById('admin-password').value;
+            if(pass === '1234') {
+                document.getElementById('role-screen').classList.add('hidden');
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('sidebar').classList.remove('hidden');
+                document.getElementById('sidebar').classList.add('flex');
+                document.getElementById('admin-view').classList.remove('hidden');
+                setMenu('home');
+            } else {
+                alert("የተሳሳተ የይለፍ ቃል!");
+            }
+        }
+
+        function exitAdmin() {
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('role-screen').classList.remove('hidden');
+            document.getElementById('admin-password').value = '';
+        }
+
+        function exitToRole() {
+            document.getElementById('public-view').classList.add('hidden');
+            document.getElementById('role-screen').classList.remove('hidden');
+        }
+
+        // Sidebar Navigation
+        function setMenu(menu) {
+            const sections = ['home', 'f001-list', 'f002-list', 'stats', 'approval'];
+            sections.forEach(s => {
+                document.getElementById(section-${s}).classList.toggle('hidden', s !== menu);
+                document.getElementById(m-${s}).classList.toggle('sidebar-active', s === menu);
+            });
+
+            if(menu === 'f001-list') renderF001();
+            if(menu === 'f002-list') renderF002();
+            if(menu === 'stats') renderStats();
+            init();
+        }
+[3/29/2026 3:53 AM] Eph: // Data Handling
+        function handlePublicSubmit(e) {
             e.preventDefault();
-            const newComplaint = {
+            const newComp = {
                 id: Date.now(),
-                name: document.getElementById('f001-name').value,
-                phone: document.getElementById('f001-phone').value,
-                email: document.getElementById('f001-email').value || 'አልተጠቀሰም',
-[3/29/2026 3:32 AM] Eph: subject: document.getElementById('f001-subject').value,
+                name: document.getElementById('p-name').value,
+                phone: document.getElementById('p-phone').value,
+                email: document.getElementById('p-email').value || 'አልተጠቀሰም',
+                subject: document.getElementById('p-subject').value,
                 status: 'በተጠባባቂ',
                 decision: null,
                 date: new Date().toLocaleString('am-ET')
             };
-            complaints.unshift(newComplaint);
+            complaints.unshift(newComp);
             save();
-            alert("ቅሬታዎ በቅጽ 001 መሠረት በስኬት ተመዝግቧል!");
+            alert("ቅሬታዎ በቁጥር 001 መሠረት ተመዝግቧል። እናመሰግናለን!");
             e.target.reset();
         }
 
-        function openModal(id) {
-            document.getElementById('f002-id').value = id;
-            document.getElementById('modal-f002').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('modal-f002').classList.add('hidden');
-        }
-
-        function handleForm002(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('f002-id').value);
-            const decision = {
-                type: document.getElementById('f002-decision-type').value,
-                comment: document.getElementById('f002-comment').value,
-                officer: document.getElementById('f002-officer').value,
-                at: new Date().toLocaleString('am-ET')
-            };
-
-            complaints = complaints.map(c => c.id === id ? {...c, status: 'ውሳኔ አግኝቷል', decision} : c);
-            save();
-            closeModal();
-            renderList();
-        }
-
-        function renderList() {
-            const list = document.getElementById('complaint-list');
+        function renderF001() {
+            const list = document.getElementById('list-f001');
             list.innerHTML = complaints.map(c => 
-                <tr class="hover:bg-blue-50/50 transition-colors">
+                <tr class="hover:bg-blue-50/50 transition-all group">
                     <td class="p-6">
-                        <div class="font-black text-slate-800">${c.name}</div>
-                        <div class="text-[10px] text-slate-400 font-bold mt-1">${c.phone} | ${c.email}</div>
-                        <div class="text-xs text-slate-600 mt-2 bg-slate-100 p-2 rounded-lg line-clamp-1">${c.subject}</div>
+                        <div class="font-black text-blue-900 uppercase text-xs">${c.name}</div>
+                        <div class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">${c.phone}</div>
                     </td>
-                    <td class="p-6">
-                        <span class="px-3 py-1 rounded-full text-[9px] font-black border uppercase ${
-                            c.status === 'ውሳኔ አግኝቷል' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100'
-                        }">${c.status}</span>
-                    </td>
-                    <td class="p-6">
-                        ${c.decision ? 
-                            <div class="text-[10px] font-black text-blue-900">${c.decision.type}</div>
-                            <div class="text-[9px] text-slate-400 font-bold mt-1">${c.decision.officer}</div>
-                         : '<span class="text-[9px] text-slate-300 font-bold italic">ውሳኔ አልተሰጠም</span>'}
+                    <td class="p-6 max-w-xs">
+                        <p class="text-[10px] text-slate-500 leading-relaxed font-bold line-clamp-2">${c.subject}</p>
                     </td>
                     <td class="p-6 text-right">
                         ${c.status === 'በተጠባባቂ' ? 
-                            <button onclick="openModal(${c.id})" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-[10px] font-black shadow-md hover:bg-blue-700 transition-all uppercase">ውሳኔ ስጥ (002)</button>
+                            <button onclick="openForm002(${c.id})" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase shadow-lg shadow-blue-100 hover:bg-blue-700">ውሳኔ ስጥ (002)</button>
                          : 
-                            <button class="text-slate-300 px-4 py-2 cursor-not-allowed text-[10px] font-black uppercase">ተጠናቋል</button>
+                            <span class="text-emerald-500 font-black text-[9px] uppercase italic">ውሳኔ ተሰጥቷል</span>
                         }
                     </td>
                 </tr>
             ).join('');
-            updateStats();
+        }
+
+        function renderF002() {
+            const container = document.getElementById('container-f002');
+            const empty = document.getElementById('empty-f002');
+            const list = complaints.filter(c => c.decision);
+
+            if(list.length === 0) {
+                container.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            container.classList.remove('hidden');
+            container.innerHTML = list.map(c => `
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-emerald-50 relative group overflow-hidden">
+                    <div class="absolute -right-2 -top-2 bg-emerald-500 text-white px-4 py-1 rounded-bl-2xl text-[8px] font-black uppercase tracking-widest">Completed</div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"><i data-lucide="user" size="16"></i></div>
+                            <div>
+                                <h4 class="text-xs font-black text-blue-900 uppercase">${c.name}</h4>
+                                <p class="text-[9px] text-slate-400 font-bold">${c.phone}</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl text-[10px] text-slate-600 leading-relaxed font-bold italic">"${c.subject}"</div>
+                        <div class="pt-4 border-t border-slate-100">
+                            <div class="text-[9px] font-black text-emerald-600 uppercase mb-2">ውሳኔ፡ ${c.decision.type}</div>
+                            <p class="text-[10px] text-slate-500 font-bold mb-4 leading-relaxed">${c.decision.comment}</p>
+[3/29/2026 3:53 AM] Eph: <div class="flex justify-between items-center text-[9px] font-black text-slate-400 uppercase tracking-tighter">
+                                <span>ባለሙያ፡ ${c.decision.officer}</span>
+                                <span>ቀን፡ ${c.decision.at}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderStats() {
+            const total = complaints.length;
+            const pending = complaints.filter(c => c.status === 'በተጠባባቂ').length;
+            const done = total - pending;
+
+            const pPer = total > 0 ? Math.round((pending/total)*100) : 0;
+            const dPer = total > 0 ? Math.round((done/total)*100) : 0;
+
+            document.getElementById('p-pending-per').innerText = pPer + '%';
+            document.getElementById('p-done-per').innerText = dPer + '%';
+            document.getElementById('bar-pending').style.width = pPer + '%';
+            document.getElementById('bar-done').style.width = dPer + '%';
+        }
+
+        function openForm002(id) {
+            document.getElementById('dec-id').value = id;
+            document.getElementById('modal-f002').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('modal-f002').classList.add('hidden'); }
+
+        function saveDecision(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('dec-id').value);
+            const decision = {
+                type: document.getElementById('dec-type').value,
+                comment: document.getElementById('dec-comment').value,
+                officer: document.getElementById('dec-officer').value,
+                at: new Date().toLocaleString('am-ET')
+            };
+
+            complaints = complaints.map(c => c.id === id ? {...c, status: 'ውሳኔ ተሰጥቷል', decision} : c);
+            save();
+            closeModal();
+            setMenu('f002-list');
         }
 
         function updateStats() {
             const total = complaints.length;
             const pending = complaints.filter(c => c.status === 'በተጠባባቂ').length;
-            const done = complaints.filter(c => c.status === 'ውሳኔ አግኝቷል').length;
-
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-pending').innerText = pending;
-            document.getElementById('stat-done').innerText = done;
-
-            if(total > 0) {
-                document.getElementById('stat-bar-pending').style.width = ${(pending/total)*100}%;
-                document.getElementById('stat-bar-done').style.width = ${(done/total)*100}%;
-            }
+            document.getElementById('stat-main-total').innerText = total;
+            document.getElementById('stat-main-pending').innerText = pending;
         }
-[3/29/2026 3:32 AM] Eph: function save() {
-            localStorage.setItem('bole_complaints_v2', JSON.stringify(complaints));
+
+        function save() {
+            localStorage.setItem('bole_v3_data', JSON.stringify(complaints));
             updateStats();
-        }
-
-        function clearData() {
-            if(confirm("ሁሉንም መረጃዎች መሰረዝ ይፈልጋሉ?")) {
-                complaints = [];
-                save();
-                renderList();
-            }
         }
 
         window.onload = init;
