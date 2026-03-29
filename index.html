@@ -1,224 +1,152 @@
-[3/29/2026 4:40 AM] Eph: <!-- Login Modal -->
-    <div id="modal-login" class="fixed inset-0 z-[150] bg-slate-900/50 backdrop-blur-md hidden flex items-center justify-center p-6 no-print">
-        <div class="bg-white p-10 rounded-[2.5rem] w-full max-w-sm shadow-2xl">
-            <h2 class="text-2xl font-black mb-6 flex items-center gap-3 text-blue-950">
-                <i data-lucide="lock"></i> <span class="am">ማረጋገጫ</span><span class="en hidden">Authentication</span>
-            </h2>
-            <input id="admin-pass" type="password" placeholder="Pass: 1234" class="w-full bg-slate-50 border p-5 rounded-2xl mb-6 outline-none focus:border-blue-900 font-bold">
-            <div class="flex gap-3">
-                <button onclick="hideLogin()" class="flex-1 font-bold text-slate-400">Cancel</button>
-                <button onclick="doLogin()" class="flex-1 btn-primary py-4 rounded-xl font-bold">Login</button>
+[3/29/2026 4:54 AM] Eph: <!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የቦሌ ክፍለ ከተማ ትምህርት ጽሕፈት ቤት | የቅሬታ ሲስተም</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@100..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap');
+        
+        body { 
+            font-family: 'Noto Sans Ethiopic', 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc;
+        }
+
+        .ethio-card {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- መግቢያ ገጽ -->
+    <div id="screen-entry" class="fixed inset-0 z-[100] bg-white flex items-center justify-center p-6 no-print">
+        <div class="max-w-4xl w-full text-center space-y-8">
+            <div class="w-24 h-24 bg-blue-900 rounded-3xl flex items-center justify-center text-white shadow-xl mx-auto">
+                <i data-lucide="graduation-cap" size="48"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+                የቦሌ ክፍለ ከተማ <br><span class="text-blue-800">ትምህርት ጽሕፈት ቤት</span>
+            </h1>
+            <p class="text-slate-500 text-lg">የቅሬታና አቤቱታ መቀበያ ዲጂታል መድረክ</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="showPublicForm()" class="bg-blue-900 text-white px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-3">
+                    ቅሬታ አቅራቢ (ቅፅ ዐዐ 1) <i data-lucide="edit-3"></i>
+                </button>
+                <button onclick="showLogin()" class="bg-slate-100 text-slate-700 px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-3">
+                    የኮሚቴ አባል <i data-lucide="shield-check"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- SECTION 2: PUBLIC FORM (ቅፅ ዐዐ 1) -->
-    <div id="view-public" class="hidden min-h-screen p-6 lg:p-12 no-print">
-        <div class="max-w-4xl mx-auto">
-            <button onclick="location.reload()" class="mb-8 flex items-center gap-2 text-slate-400 font-bold hover:text-blue-900 transition-all">
-                <i data-lucide="arrow-left" size="18"></i> Back
+    <!-- Login Modal -->
+    <div id="modal-login" class="fixed inset-0 z-[150] bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-6 no-print">
+        <div class="bg-white p-10 rounded-[2.5rem] w-full max-w-sm shadow-2xl">
+            <h2 class="text-2xl font-black mb-6 flex items-center gap-3 text-blue-950">ማረጋገጫ</h2>
+            <input id="admin-pass" type="password" placeholder="Pass: 1234" class="w-full bg-slate-50 border p-5 rounded-2xl mb-6 outline-none font-bold">
+            <div class="flex gap-3">
+                <button onclick="hideLogin()" class="flex-1 font-bold text-slate-400">ተመለስ</button>
+                <button onclick="doLogin()" class="flex-1 bg-blue-900 text-white py-4 rounded-xl font-bold">ግባ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ቅፅ ዐዐ 1 -->
+    <div id="view-public" class="hidden min-h-screen p-6 no-print">
+        <div class="max-w-3xl mx-auto">
+            <button onclick="location.reload()" class="mb-6 flex items-center gap-2 text-slate-400 font-bold">
+                <i data-lucide="arrow-left" size="18"></i> ተመለስ
             </button>
-            
-            <div class="ethio-card p-10 lg:p-16">
-                <header class="border-b pb-8 mb-10 flex justify-between items-start">
-                    <div>
-                        <h2 class="text-3xl font-black text-blue-950">ቅፅ ዐዐ 1</h2>
-                        <p class="text-slate-500 font-bold">የቅሬታ ማቅረቢያ ቅጽ</p>
+            <div class="ethio-card p-10">
+                <h2 class="text-3xl font-black text-blue-950 mb-8 border-b pb-4">ቅፅ ዐዐ 1: የቅሬታ ማቅረቢያ</h2>
+                <form onsubmit="submitForm001(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input id="f1-name" placeholder="ሙሉ ስም" required class="bg-slate-50 p-4 rounded-xl border-none outline-none focus:ring-2 ring-blue-100">
+[3/29/2026 4:54 AM] Eph: <input id="f1-date" type="date" required class="bg-slate-50 p-4 rounded-xl border-none outline-none">
+                        <input id="f1-role" placeholder="የስራ ድርሻ" required class="bg-slate-50 p-4 rounded-xl border-none outline-none">
+                        <input id="f1-phone" placeholder="ስልክ ቁጥር" required class="bg-slate-50 p-4 rounded-xl border-none outline-none">
                     </div>
-                    <div class="text-right text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                        Bole Sub-City Education Office
+                    <input id="f1-target" placeholder="ቅሬታው የሚመለከተው የስራ ክፍል እና ኃላፊ" required class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none">
+                    <textarea id="f1-subject" placeholder="የቅሬታው ዋና / ፍሬ ነገር" required class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none h-32"></textarea>
+                    <textarea id="f1-request" placeholder="ምን እንዲደረግላችሁ ትፈልጋላችሁ?" required class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none h-24"></textarea>
+                    <div class="p-6 border-2 border-dashed rounded-2xl text-center text-slate-400">
+                        <i data-lucide="upload-cloud" class="mx-auto mb-2"></i> ደጋፊ ማስረጃዎችን እዚህ ይጫኑ
+                        <input type="file" class="hidden" id="f1-file">
                     </div>
-                </header>
-
-                <form onsubmit="submitForm001(event)" class="space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-600">ሙሉ ስም</label>
-                            <input id="f1-name" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-600">የቅሬታው ቀን</label>
-                            <input id="f1-date" type="date" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-600">የሥራ ድርሻ</label>
-                            <input id="f1-role" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-600">ስልክ ቁጥር</label>
-                            <input id="f1-phone" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 font-medium">
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-slate-600">ቅሬታው የሚመለከተው የሥራ ክፍል እና ኃላፊ</label>
-                        <input id="f1-target" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 font-medium">
-                    </div>
-
-                    <div class="space-y-2">
-[3/29/2026 4:40 AM] Eph: <label class="text-sm font-bold text-slate-600">የቅሬታው ዋና / ፍሬ ነገር</label>
-                        <textarea id="f1-subject" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 h-32 font-medium resize-none"></textarea>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-slate-600">ምን እንዲደረግላችሁ ትፈልጋላችሁ?</label>
-                        <textarea id="f1-request" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none focus:ring-2 ring-blue-100 h-24 font-medium resize-none"></textarea>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-slate-600 flex items-center gap-2">
-                            <i data-lucide="paperclip" size="16"></i> ደጋፊ ማስረጃዎች ካሉ ይጫኑ (Upload)
-                        </label>
-                        <input type="file" class="w-full bg-slate-50 border-2 border-dashed p-6 rounded-2xl cursor-pointer">
-                    </div>
-
-                    <button type="submit" class="w-full btn-primary py-6 rounded-2xl font-black text-xl shadow-xl flex items-center justify-center gap-3">
-                        <span class="am">ቅሬታውን መዝግብ</span>
-                        <span class="en hidden">Submit Official Record</span>
-                        <i data-lucide="check-circle"></i>
-                    </button>
+                    <button type="submit" class="w-full bg-blue-900 text-white py-5 rounded-2xl font-bold text-xl">ቅሬታውን መዝግብ</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- SECTION 3: ADMIN DASHBOARD -->
-    <div id="view-admin" class="hidden min-h-screen flex flex-col lg:flex-row no-print">
-        <aside class="w-full lg:w-72 bg-blue-950 text-white p-8 flex flex-col gap-8">
-            <h2 class="text-2xl font-black tracking-tighter">BOLE ADMIN</h2>
-            <nav class="flex-1 space-y-2">
-                <button onclick="setTab('dashboard')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 font-bold flex items-center gap-3">
-                    <i data-lucide="layout"></i> ዳሽቦርድ
-                </button>
-                <button onclick="setTab('pending')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 font-bold flex items-center gap-3">
-                    <i data-lucide="inbox"></i> አዳዲስ ቅሬታዎች
-                </button>
-                <button onclick="setTab('done')" class="w-full text-left p-4 rounded-xl hover:bg-white/5 font-bold flex items-center gap-3">
-                    <i data-lucide="verified"></i> የተጠናቀቁ
-                </button>
+    <!-- Admin View -->
+    <div id="view-admin" class="hidden min-h-screen flex flex-col md:flex-row no-print">
+        <aside class="w-full md:w-64 bg-slate-900 text-white p-6 space-y-8">
+            <h2 class="text-xl font-black">ADMIN PANEL</h2>
+            <nav class="space-y-2">
+                <button onclick="setTab('pending')" class="w-full text-left p-4 rounded-xl hover:bg-white/10 font-bold">አዳዲስ ቅሬታዎች</button>
+                <button onclick="setTab('done')" class="w-full text-left p-4 rounded-xl hover:bg-white/10 font-bold">ውሳኔ የተሰጣቸው</button>
+                <button onclick="location.reload()" class="w-full text-left p-4 rounded-xl text-red-400 font-bold mt-10">መውጫ</button>
             </nav>
-            <button onclick="location.reload()" class="p-4 bg-red-500/10 text-red-400 rounded-xl font-bold text-xs uppercase tracking-widest">Logout</button>
         </aside>
-
-        <main class="flex-1 p-8 lg:p-12 overflow-y-auto">
-            <div id="tab-dashboard" class="space-y-8">
-                <h1 class="text-4xl font-black text-slate-900 am">የስራ መከታተያ ገጽ</h1>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-8 rounded-3xl border shadow-sm">
-                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Total Grievances</p>
-                        <h3 id="stat-total" class="text-5xl font-black text-blue-900">0</h3>
-                    </div>
-                    <div class="bg-white p-8 rounded-3xl border shadow-sm">
-                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Resolved</p>
-                        <h3 id="stat-done" class="text-5xl font-black text-emerald-600">0</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-pending" class="hidden space-y-6">
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div id="tab-pending" class="space-y-6">
                 <h2 class="text-2xl font-black">አዳዲስ ቅሬታዎች (ቅፅ ዐዐ 1)</h2>
                 <div id="list-pending" class="space-y-4"></div>
             </div>
-[3/29/2026 4:40 AM] Eph: <div id="tab-done" class="hidden space-y-6">
-                <h2 class="text-2xl font-black">ውሳኔ የተሰጠባቸው (ቅፅ ዐዐ 2)</h2>
+            <div id="tab-done" class="hidden space-y-6">
+                <h2 class="text-2xl font-black text-emerald-600">ውሳኔ የተሰጣቸው (ቅፅ ዐዐ 2)</h2>
                 <div id="list-done" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
             </div>
         </main>
     </div>
 
-    <!-- DECISION MODAL (ቅፅ ዐዐ 2) -->
-    <div id="modal-decision" class="fixed inset-0 z-[250] bg-slate-900/60 backdrop-blur-xl hidden flex items-center justify-center p-6 no-print">
-        <div class="bg-white w-full max-w-3xl rounded-[3rem] p-10 lg:p-14 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <header class="flex justify-between mb-10 border-b pb-6">
-                <div>
-                    <h2 class="text-3xl font-black text-blue-950">ቅፅ ዐዐ 2</h2>
-                    <p class="text-slate-500 font-bold">የቅሬታ መልስ መስጫ / ውሳኔ ቅጽ</p>
-                </div>
-                <button onclick="closeDecision()" class="text-slate-300 hover:text-red-500"><i data-lucide="x" size="30"></i></button>
-            </header>
-
-            <form onsubmit="submitForm002(event)" class="space-y-6">
+    <!-- ቅፅ ዐዐ 2 Modal -->
+    <div id="modal-decision" class="fixed inset-0 z-[200] bg-slate-900/50 backdrop-blur-md hidden flex items-center justify-center p-6 no-print">
+        <div class="bg-white p-10 rounded-[2.5rem] w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-black mb-6">ቅፅ ዐዐ 2: መልስ መስጫ</h2>
+            <form onsubmit="submitForm002(event)" class="space-y-4">
                 <input type="hidden" id="dec-id">
-                
-                <div class="grid grid-cols-2 gap-4 bg-blue-50 p-6 rounded-2xl mb-6">
-                    <div>
-                        <p class="text-[10px] uppercase font-bold text-blue-400 mb-1">ቅሬታ አቅራቢ</p>
-                        <p id="dec-view-name" class="font-bold text-blue-900">---</p>
-                    </div>
-                    <div>
-                        <p class="text-[10px] uppercase font-bold text-blue-400 mb-1">የቀረበበት ቀን</p>
-                        <p id="dec-view-date" class="font-bold text-blue-900">---</p>
-                    </div>
+                <div class="bg-blue-50 p-4 rounded-xl space-y-2 text-sm">
+                    <p><strong>ስም፡</strong> <span id="dec-name"></span></p>
+                    <p><strong>ቀን፡</strong> <span id="dec-date"></span></p>
                 </div>
-
-                <div class="space-y-2">
-                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest">ቅሬታው በአግባቡ ስለመጠራቱ / ምርመራ</label>
-                    <textarea id="f2-process" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none font-medium h-24 resize-none"></textarea>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest">የተገኘው ግኝት</label>
-                    <textarea id="f2-findings" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none font-medium h-24 resize-none"></textarea>
-                </div>
-
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-xs font-black text-slate-400 uppercase tracking-widest">ቅሬታው ትክክለኛነት</label>
-                        <select id="f2-validity" class="w-full bg-slate-50 border p-4 rounded-xl outline-none font-bold">
-                            <option value="ትክክል ነው">ትክክል ነው</option>
-                            <option value="ትክክል አይደለም">ትክክል አይደለም</option>
-                        </select>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-black text-slate-400 uppercase tracking-widest">የውሳኔ ቀን</label>
-                        <input id="f2-date" type="date" required class="w-full bg-slate-50 border p-4 rounded-xl outline-none font-bold">
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest">የበላይ ኃላፊ ውሳኔ</label>
-                    <textarea id="f2-decision" required class="w-full bg-slate-50 border-2 border-blue-100 p-4 rounded-xl outline-none font-bold h-32 resize-none"></textarea>
-                </div>
-
-                <button type="submit" class="w-full btn-primary py-6 rounded-2xl font-black shadow-xl uppercase tracking-widest">ውሳኔውን አጽድቅ (Confirm Decision)</button>
+                <textarea id="f2-process" placeholder="ቅሬታው በአግባቡ ስለመጠራቱ" required class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none h-20"></textarea>
+                <textarea id="f2-findings" placeholder="የተገኘው ግኝት" required class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none h-20"></textarea>
+                <select id="f2-valid" class="w-full bg-slate-50 p-4 rounded-xl border-none">
+[3/29/2026 4:54 AM] Eph: <option value="ትክክል ነው">ቅሬታው ትክክል ነው</option>
+                    <option value="ትክክል አይደለም">ቅሬታው ትክክል አይደለም</option>
+                </select>
+                <textarea id="f2-decision" placeholder="የበላይ ኃላፊ ውሳኔ" required class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none h-24"></textarea>
+                <input id="f2-date" type="date" required class="w-full bg-slate-50 p-4 rounded-xl border-none">
+                <button type="submit" class="w-full bg-blue-900 text-white py-4 rounded-xl font-bold">ውሳኔውን አጽድቅ</button>
             </form>
         </div>
     </div>
-[3/29/2026 4:40 AM] Eph: <!-- PRINT TEMPLATE -->
-    <div id="print-area" class="hidden print-only p-10 font-serif">
-        <div class="text-center border-b-4 border-double pb-6 mb-8">
+
+    <!-- Print Template -->
+    <div id="print-area" class="hidden print-only p-12 bg-white text-black">
+        <div class="text-center border-b-2 border-black pb-4 mb-8">
             <h1 class="text-2xl font-bold">የቦሌ ክፍለ ከተማ ትምህርት ጽሕፈት ቤት</h1>
             <h2 class="text-xl">የቅሬታ ውሳኔ መግለጫ (ቅፅ ዐዐ 2)</h2>
         </div>
-        <div id="print-content" class="space-y-6"></div>
-        <div class="mt-20 flex justify-between">
-            <div class="text-center">
-                <div class="w-40 border-b border-black mb-2"></div>
-                <p class="text-xs italic">ውሳኔ የሰጠው ኃላፊ ፊርማ</p>
-            </div>
-            <div class="text-center">
-                <div class="w-40 border-b border-black mb-2"></div>
-                <p class="text-xs italic">የጽሕፈት ቤቱ ማህተም</p>
-            </div>
-        </div>
+        <div id="print-content" class="space-y-4"></div>
     </div>
 
     <script>
-        const STORAGE_KEY = 'bole_edu_v4_data';
-        let cases = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        let currentLang = 'am';
+        let cases = JSON.parse(localStorage.getItem('bole_cases') || '[]');
 
-        function init() {
-            lucide.createIcons();
-            updateStats();
-        }
-
-        function toggleLang() {
-            currentLang = currentLang === 'am' ? 'en' : 'am';
-            document.getElementById('lang-text').innerText = currentLang === 'am' ? 'English' : 'አማርኛ';
-            document.querySelectorAll('.am').forEach(e => e.classList.toggle('hidden', currentLang === 'en'));
-            document.querySelectorAll('.en').forEach(e => e.classList.toggle('hidden', currentLang === 'am'));
-        }
+        function init() { lucide.createIcons(); }
 
         function showPublicForm() {
             document.getElementById('screen-entry').classList.add('hidden');
@@ -233,22 +161,20 @@
                 document.getElementById('screen-entry').classList.add('hidden');
                 document.getElementById('modal-login').classList.add('hidden');
                 document.getElementById('view-admin').classList.remove('hidden');
-                setTab('dashboard');
-            } else { alert("Authentication Failed"); }
+                setTab('pending');
+            }
         }
 
-        function setTab(tab) {
-            ['dashboard', 'pending', 'done'].forEach(t => {
-                document.getElementById(tab-${t}).classList.toggle('hidden', t !== tab);
-            });
-            if(tab === 'pending') renderPending();
-            if(tab === 'done') renderResolved();
-            lucide.createIcons();
+        function setTab(t) {
+            document.getElementById('tab-pending').classList.toggle('hidden', t !== 'pending');
+            document.getElementById('tab-done').classList.toggle('hidden', t !== 'done');
+            if(t === 'pending') renderPending();
+            else renderDone();
         }
 
         function submitForm001(e) {
             e.preventDefault();
-            const newCase = {
+            cases.push({
                 id: Date.now(),
                 name: document.getElementById('f1-name').value,
                 date: document.getElementById('f1-date').value,
@@ -257,23 +183,80 @@
                 target: document.getElementById('f1-target').value,
                 subject: document.getElementById('f1-subject').value,
                 request: document.getElementById('f1-request').value,
-                status: 'Pending',
-                form002: null
-            };
-            cases.unshift(newCase);
-            save();
-            alert("ቅሬታዎ በቅፅ ዐዐ 1 መሠረት ተመዝግቧል።");
+                status: 'pending'
+            });
+            localStorage.setItem('bole_cases', JSON.stringify(cases));
+            alert("ቅሬታው ተመዝግቧል!");
             location.reload();
         }
 
         function renderPending() {
             const list = document.getElementById('list-pending');
-            const pending = cases.filter(c => c.status === 'Pending');
-            list.innerHTML = pending.map(c => `
-                <div class="bg-white p-6 rounded-2xl border flex justify-between items-center shadow-sm">
-[3/29/2026 4:40 AM] Eph: <div>
-                        <h4 class="font-bold text-lg text-blue-900">${c.name}</h4>
-                        <p class="text-xs text-slate-400 uppercase font-bold tracking-widest">${c.date} | ${c.phone}</p>
-                        <p class="text-sm text-slate-600 mt-2">ፍሬ ነገር፡ ${c.subject.substring(0, 50)}...</p>
+            list.innerHTML = cases.filter(c => c.status === 'pending').map(c => 
+                <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-lg">${c.name}</h3>
+                        <p class="text-sm text-slate-400">${c.date} | ${c.phone}</p>
                     </div>
-                    <button onclick="openDecision(${c.id})" class="btn-primary px-6 py-3 rounded-xl font-bold tex
+                    <button onclick="openDecision(${c.id})" class="bg-blue-900 text-white px-6 py-2 rounded-xl font-bold">ውሳኔ ስጥ</button>
+                </div>
+            ).join('');
+        }
+
+        function openDecision(id) {
+            const c = cases.find(i => i.id === id);
+[3/29/2026 4:54 AM] Eph: document.getElementById('dec-id').value = id;
+            document.getElementById('dec-name').innerText = c.name;
+            document.getElementById('dec-date').innerText = c.date;
+            document.getElementById('modal-decision').classList.remove('hidden');
+        }
+
+        function submitForm002(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('dec-id').value);
+            const decision = {
+                process: document.getElementById('f2-process').value,
+                findings: document.getElementById('f2-findings').value,
+                valid: document.getElementById('f2-valid').value,
+                text: document.getElementById('f2-decision').value,
+                date: document.getElementById('f2-date').value
+            };
+            cases = cases.map(c => c.id === id ? {...c, status: 'done', decision} : c);
+            localStorage.setItem('bole_cases', JSON.stringify(cases));
+            document.getElementById('modal-decision').classList.add('hidden');
+            setTab('done');
+        }
+
+        function renderDone() {
+            const list = document.getElementById('list-done');
+            list.innerHTML = cases.filter(c => c.status === 'done').map(c => 
+                <div class="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
+                    <h3 class="font-bold text-lg">${c.name}</h3>
+                    <p class="text-sm bg-emerald-50 text-emerald-700 p-3 rounded-xl font-bold">ውሳኔ፡ ${c.decision.text}</p>
+                    <button onclick="printCase(${c.id})" class="w-full border-2 py-2 rounded-xl font-bold flex items-center justify-center gap-2">
+                        <i data-lucide="printer" size="16"></i> ኤክስፖርት (Print)
+                    </button>
+                </div>
+            ).join('');
+            lucide.createIcons();
+        }
+
+        function printCase(id) {
+            const c = cases.find(i => i.id === id);
+            document.getElementById('print-content').innerHTML = 
+                <p><strong>የቅሬታ አቅራቢ ስም፡</strong> ${c.name}</p>
+                <p><strong>ቀን፡</strong> ${c.date}</p>
+                <p><strong>ፍሬ ነገር፡</strong> ${c.subject}</p>
+                <hr class="my-4">
+                <p><strong>ምርመራ፡</strong> ${c.decision.process}</p>
+                <p><strong>ግኝት፡</strong> ${c.decision.findings}</p>
+                <p><strong>ውሳኔ፡</strong> ${c.decision.text}</p>
+                <p><strong>የውሳኔ ቀን፡</strong> ${c.decision.date}</p>
+            ;
+            window.print();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
